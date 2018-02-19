@@ -492,7 +492,8 @@ class _freeze_time(object):
         time.localtime = time.localtime.previous_localtime_function
         time.strftime = time.strftime.previous_strftime_function
 
-        uuid._uuid_generate_time = real_uuid_generate_time
+        if real_uuid_generate_time is not None:
+            uuid._uuid_generate_time = real_uuid_generate_time
         uuid._UuidCreate = real_uuid_create
 
     def decorate_callable(self, func):
