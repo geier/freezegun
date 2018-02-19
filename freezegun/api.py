@@ -23,7 +23,7 @@ real_datetime = datetime.datetime
 
 try:
     real_uuid_generate_time = uuid._uuid_generate_time
-except ImportError:
+except (ImportError, AttributeError):
     real_uuid_generate_time = None
 
 try:
