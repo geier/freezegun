@@ -32,6 +32,11 @@ except ImportError:
     real_uuid_create = None
 
 try:
+    real_generate_time_safe = uuid._generate_time_safe
+except (ImportError, AttributeError):
+    real_generate_time_safe = None
+
+try:
     import copy_reg as copyreg
 except ImportError:
     import copyreg
@@ -392,6 +397,7 @@ class _freeze_time(object):
         time.strftime = fake_strftime
         uuid._uuid_generate_time = None
         uuid._UuidCreate = None
+        uuid._generate_time_safe = None
 
         copyreg.dispatch_table[real_datetime] = pickle_fake_datetime
         copyreg.dispatch_table[real_date] = pickle_fake_date
@@ -492,9 +498,9 @@ class _freeze_time(object):
         time.localtime = time.localtime.previous_localtime_function
         time.strftime = time.strftime.previous_strftime_function
 
-        if real_uuid_generate_time is not None:
-            uuid._uuid_generate_time = real_uuid_generate_time
+        uuid._uuid_generate_time = real_uuid_generate_time
         uuid._UuidCreate = real_uuid_create
+        uuid._generate_time_safe = real_generate_time_safe
 
     def decorate_callable(self, func):
         def wrapper(*args, **kwargs):

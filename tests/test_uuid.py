@@ -20,5 +20,7 @@ def test_uuid1():
     target = datetime.datetime(2017, 2, 6, 14, 8, 21)
 
     with freeze_time(target):
+        print(time_from_uuid(uuid.uuid1()))
+        print(target)
         assert time_from_uuid(uuid.uuid1()) == target
 
